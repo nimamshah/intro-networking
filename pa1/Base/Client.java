@@ -35,13 +35,31 @@ public class Client {
         String response;
         try {
           response = in.readLine();
-          if (response == null || response.equals("")) {
+          switch (response) {
+            case "-1":
+              response = "incorrect operation command.";
+              break;
+            case "-2":
+              response = "number of inputs is less than two.";
+              break;
+            case "-3":
+              response = "number of inputs is more than four.";
+              break;
+            case "-4":
+              response = "one or more of the inputs contain(s) non-number(s).";
+              break;
+            case "-5":
+              response = "exit.";
+              break;
+          }
+
+          if (response.equals("exit.")) {
             System.exit(0);
           }
         } catch (IOException ex) {
           response = "Error: " + ex;
         }
-        messageArea.append(response + "\n");
+        messageArea.append("received: " + response + "\n");
         dataField.selectAll();
       }
     });
@@ -52,7 +70,7 @@ public class Client {
     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     out = new PrintWriter(socket.getOutputStream(), true);
 
-    System.out.println(in.readLine());
+    messageArea.append("received: " + in.readLine() + "\n");
   }
 
   public static void main(String[] args) throws Exception {
