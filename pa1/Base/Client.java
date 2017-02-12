@@ -52,17 +52,22 @@ public class Client {
               response = "exit.";
               break;
           }
-
-          if (response.equals("exit.")) {
-            System.exit(0);
-          }
         } catch (IOException ex) {
           response = "Error: " + ex;
         }
         messageArea.append("received: " + response + "\n");
+        log("received: " + response);
         dataField.selectAll();
+        
+        if (response.equals("exit.")) {
+          System.exit(0);
+        }
       }
     });
+  }
+
+  public static void log(String s) {
+    System.out.println(s);
   }
 
   public void connectToServer(String serverURL, int port) throws IOException {
@@ -70,7 +75,9 @@ public class Client {
     in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     out = new PrintWriter(socket.getOutputStream(), true);
 
-    messageArea.append("received: " + in.readLine() + "\n");
+    String greeting = in.readLine();
+    messageArea.append("received: " + greeting + "\n");
+    log("received: " + greeting);
   }
 
   public static void main(String[] args) throws Exception {

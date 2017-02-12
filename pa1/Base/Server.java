@@ -11,6 +11,7 @@ public class Server {
 
   private static String delims = "[ ]+";
   private static String[] commands = {"add", "multiply", "subtract", "bye", "terminate"};
+  private static boolean done = false;
 
   public static void log(String s) {
     System.out.println(s);
@@ -38,7 +39,8 @@ public class Server {
   //  call to calculate the answer.
   public static int parseTokens(String[] tokens) {
     int answer = 0;
-    if (tokens[0].toLowerCase().equals("bye")) {
+    tokens[0] = tokens[0].toLowerCase();
+    if (tokens[0].equals("bye") || tokens[0].equals("terminate")) {
       answer = -5;
     } else if (!Arrays.asList(commands).contains(tokens[0])) {
       answer = -1;
@@ -88,6 +90,7 @@ public class Server {
       while (true) {
         Socket socket = listener.accept();
         log("Server is listening.");
+
         try {
           BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -96,17 +99,22 @@ public class Server {
           while (true) {
             String input = in.readLine();
             String[] tokens = input.split(delims);
+            if (input.toLowerCase().equals("terminate")) done = true;
 
             int answer = parseTokens(tokens);
             log("get: " + input + ", return: " + answer);
             out.println(answer);
+            if (answer == -5) break;
           }
 
         } finally {
+          log("Closing socket.");
           socket.close();
+          if (done) break;
         }
       }
     } finally {
+      log ("Closing listener.");
       listener.close();
     }
   }
