@@ -58,7 +58,7 @@ public class Client {
         messageArea.append("received: " + response + "\n");
         log("received: " + response);
         dataField.selectAll();
-        
+
         if (response.equals("exit.")) {
           System.exit(0);
         }
@@ -85,7 +85,9 @@ public class Client {
     client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     client.frame.pack();
     client.frame.setVisible(true);
-    client.connectToServer("127.0.0.1", 9659);
+    String serverURL = !(args[0] == null) ? args[0] : "127.0.0.1";
+    int port = !(args[1] == null) ? Integer.parseInt(args[1]) : 9659;
+    client.connectToServer(serverURL, port);
 
     // System.out.println(in.readLine());
     //

@@ -84,7 +84,8 @@ public class Server {
 
   // Runs the Server
   public static void main(String[] args) throws IOException {
-    ServerSocket listener = new ServerSocket(9659);
+    int port = !(args[0] == null) ? Integer.parseInt(args[0]) : 9659;
+    ServerSocket listener = new ServerSocket(port);
     log("Server started.");
     try {
       while (true) {
