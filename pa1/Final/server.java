@@ -89,12 +89,10 @@ public class server {
     log("Server started.");
     try {
       while (true) {
-        // Accept connection request
         Socket socket = listener.accept();
         log("Server is listening.");
 
         try {
-          // Initialize IO streams for communication via socket
           BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
           out.println("Hello!");
@@ -104,7 +102,6 @@ public class server {
             String[] tokens = input.split(delims);
             if (input.toLowerCase().equals("terminate")) done = true;
 
-            // Get answer by parsing tokens and evaluating
             int answer = parseTokens(tokens);
             log("get: " + input + ", return: " + answer);
             out.println(answer);
@@ -112,14 +109,12 @@ public class server {
           }
 
         } finally {
-          // Close socket when complete
           log("Closing socket.");
           socket.close();
           if (done) break;
         }
       }
     } finally {
-      // If done communicating, close server
       log ("Closing listener.");
       listener.close();
     }
