@@ -1,5 +1,3 @@
-package pa2;
-
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -44,7 +42,8 @@ public class network {
 
         while (true) {
           String input = in.readLine();
-
+          log(input);
+          out.println("Hiya");
           // Parse input HERE
         }
       } catch (IOException e) {

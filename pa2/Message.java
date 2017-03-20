@@ -1,5 +1,3 @@
-package pa2;
-
 public class Message {
 
   private byte seq;

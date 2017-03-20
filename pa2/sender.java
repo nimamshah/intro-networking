@@ -1,5 +1,3 @@
-package pa2;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -22,19 +20,14 @@ public class sender {
 
   }
 
-  private void rdt_send() {
-    out.println(data);
-  }
-
-  private void rdt_rcv(String rcvpkt) {
-    
-  }
-
   private void sendPackets() {
-    int ack = 0;
+    int seq = 0;
+    byte ack = 0;
 
     while (true) {
-      rdt_send(Message.toString(packets.get(NUMBER)));
+      rdt_send(Message.toString(packets.get(seq)));
+      seq++;
+
       try {
         rdt_rcv(in.readLine());
       } catch (IOException ex) {
@@ -43,9 +36,28 @@ public class sender {
     }
   }
 
+  private void rdt_send(String data) {
+    out.println(data);
+  }
+
+  private void rdt_rcv(String rcvpkt) {
+    // Message packet = Message.toMessage(rcvpkt);
+  }
+
   // Convenience function for printing to console
   private static void log(String s) {
     System.out.println(s);
+  }
+
+  // Helper function to determine checksum
+  private static int calculateChecksum(String s) {
+    s = s.replaceAll("\\s+","");
+    char[] chars = s.toCharArray();
+    int checksum = 0;
+    for (int i = 0; i < chars.length; i++) {
+      checksum += (int)chars[i];
+    }
+    return checksum;
   }
 
   // Helper function to parse message.txt and create packets for transmission
@@ -61,7 +73,7 @@ public class sender {
       for (int i = 0; i < words.length; i++) {
         if (seq == 0) seq = 1;
         else seq = 0;
-        packets.add(new Message(seq, (byte)i, 0, words[i]));
+        packets.add(new Message(seq, (byte)i, calculateChecksum(words[i]), words[i]));
       }
     } catch (IOException e) {
       e.printStackTrace();
