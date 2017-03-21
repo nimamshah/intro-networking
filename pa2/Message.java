@@ -24,10 +24,26 @@ public class Message {
   }
 
   // Converts String representation of message to original
-  public static Message toMessage(String s) {
+  public static Message extract(String s) {
     String[] sections = s.split(delims);
     return new Message((byte)Integer.parseInt(sections[0]),
       (byte)Integer.parseInt(sections[1]), Integer.parseInt(sections[2]),
       sections[3]);
+  }
+
+  public byte getSeq() {
+    return seq;
+  }
+
+  public byte getId() {
+    return id;
+  }
+
+  public int getChecksum() {
+    return checksum;
+  }
+
+  public String getPacket() {
+    return packet;
   }
 }

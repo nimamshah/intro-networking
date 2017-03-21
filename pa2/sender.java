@@ -16,10 +16,17 @@ public class sender {
 
 
   // Constructor to allow calling member functions
-  public sender() {
+  public sender(String serverURL, int port) throws IOException {
+    // Setup networking
+    Socket socket = new Socket(serverURL, port);
+    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    out = new PrintWriter(socket.getOutputStream(), true);
 
+    String greeting = in.readLine();
+    log("received: " + greeting);
   }
 
+  // Wrapper function for RDT 3.0 Sender protocol
   private void sendPackets() {
     int seq = 0;
     byte ack = 0;
@@ -37,6 +44,7 @@ public class sender {
   }
 
   private void rdt_send(String data) {
+    log("sending: " + data);
     out.println(data);
   }
 
@@ -80,15 +88,6 @@ public class sender {
     }
   }
 
-  private void connectToNetwork(String serverURL, int port) throws IOException {
-    Socket socket = new Socket(serverURL, port);
-    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    out = new PrintWriter(socket.getOutputStream(), true);
-
-    String greeting = in.readLine();
-    log("received: " + greeting);
-  }
-
   // Debugging function to see what packets are created
   private void printPackets() {
     for (int i = 0; i < packets.size(); i++) {
@@ -100,8 +99,7 @@ public class sender {
     String serverURL = args[0];
     int port = Integer.parseInt(args[1]);
 
-    sender s = new sender();
-    s.connectToNetwork(serverURL, port);
+    sender s = new sender(serverURL, port);
     s.createPackets(messageFileName);
 
     // DEBUGGING
