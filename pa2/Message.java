@@ -7,6 +7,11 @@ public class Message {
 
   private static final String delims = "[ ]+";
 
+  // Empty Constructor
+  public Message() {
+    
+  }
+
   // Constructor to a message for transmission
   public Message(byte seq, byte id, int checksum, String packet) {
     this.seq = seq;
