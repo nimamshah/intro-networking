@@ -59,7 +59,7 @@ public class receiver {
   // Wrapper for all logic of RDT2.2/3.0 Receiver
   private void rdt_rcv(String rcvstr) {
     if (rcvstr.equals("-1")) {
-      complete = true;/
+      complete = true;
       return;
     }
     Message rcvpkt = Message.extract(rcvstr);
