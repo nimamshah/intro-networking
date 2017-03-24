@@ -4,12 +4,13 @@ public class Message {
   private byte id;
   private int checksum;
   private String packet;
+  private String packetType;
 
   private static final String delims = "[ ]+";
 
   // Empty Constructor
   public Message() {
-    
+
   }
 
   // Constructor to a message for transmission
@@ -48,7 +49,15 @@ public class Message {
     return checksum;
   }
 
+  public void setChecksum(int checksum) {
+    this.checksum = checksum;
+  }
+
   public String getPacket() {
     return packet;
+  }
+
+  public boolean isACK() {
+    return packet.contains("ACK") && (seq == (byte)0 || seq == (byte)1);
   }
 }
