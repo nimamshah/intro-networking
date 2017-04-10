@@ -11,6 +11,7 @@ public class linkstate {
   // String[][] table;
   Node[] nodes;
   String nprime;
+  String nprimeIndices;
   Node currentNode;
   int step = 0;
   boolean header = false;
@@ -112,6 +113,9 @@ public class linkstate {
       int iMin = -1;
       int min = inf;
       for (int i = 0; i < Dv.length; i++) {
+        for (int j = 0; j < nprimeIndices; j++) {
+          if (i == j) continue;
+        }
         if (Dv[i] < min) {
           min = Dv[i];
           iMin = i;
@@ -120,6 +124,8 @@ public class linkstate {
 
       // Add w to N'
       nprime += "," + Integer.toString(nodes[iMin+1].getId());
+      nprimeIndices += "," + Integer.toString(nodes[iMin+1].getId()-1);
+
       // log(nprime);
       currentNode = nodes[iMin+1];
 
